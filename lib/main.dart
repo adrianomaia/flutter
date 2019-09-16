@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import './question.dart';
+
 //void main(){
 //runApp(MyApp());
 //}
@@ -14,13 +16,20 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
+// "_" turns the class into a private class. So underscore tuns variables, class, methods into private things
 class _MyAppState extends State<MyApp> {
-  var questionIndex = 0;
+  var _questionIndex = 0;
 
   void answerQuestion() {
-    questionIndex = questionIndex + 1;
-    print(questionIndex);
+
+    setState(() {
+      _questionIndex = _questionIndex + 1;
+    });
+
+    print(_questionIndex);
   }
+
+
 
   @override //make code clear and cleaner
   Widget build(BuildContext context) {
@@ -38,7 +47,7 @@ class _MyAppState extends State<MyApp> {
       body: Column(
         children: <Widget>[
           //questions.element(0) -> dart way
-          Text(questions[questionIndex]),
+          Question(questions[_questionIndex]),
           RaisedButton(
             child: Text('Answer 1'),
             onPressed:  () => print('Answer 1'),
