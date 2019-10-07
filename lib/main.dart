@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-
-import './question.dart';
-import './answer.dart';
+import 'package:flutter_complete_guide/result.dart';
+import 'quiz.dart';
+import 'result.dart';
 
 //void main(){
 //runApp(MyApp());
@@ -19,49 +19,71 @@ class MyApp extends StatefulWidget {
 // "_" turns the class into a private class. So underscore tuns variables, class, methods into private things
 class _MyAppState extends State<MyApp> {
   var _questionIndex = 0;
+  var _totalScore = 0;
 
-  void answerQuestion() {
+  var _questions = [
+    {
+      'questionText': 'What\'s your favorite color?',
+      'answers': [
+        {'text': 'Black', 'score': 10},
+        {'text': 'Red', 'score': 5},
+        {'text': 'Green', 'score': 3},
+        {'text': 'White', 'score': 1}
+      ],
+    },
+    {
+      'questionText': 'What\s your favorite animal?',
+      'answers': [
+        {'text': 'Cat', 'score': 10},
+        {'text': 'Dog', 'score': 5},
+        {'text': 'Horse', 'score': 3},
+        {'text': 'Lion', 'score': 1}
+        ],
+    },
+    {
+      'questionText': 'What\s your favorite player?',
+      'answers': [
+        {'text': 'Messi', 'score': 10},
+        {'text': 'Salah', 'score': 5},
+        {'text': 'Ronaldo', 'score': 3},
+        {'text': 'Bernardo', 'score': 1}
+        ],
+    },
+  ];
+
+  void answerQuestion(int score) {
+    
+    _totalScore = _totalScore + score;
+    
     setState(() {
       _questionIndex = _questionIndex + 1;
     });
 
     print(_questionIndex);
+
+    if (_questionIndex < _questions.length) {
+      print('You stil have more questions to answer!');
+    } else {
+      print('No more questions!');
+    }
   }
 
   @override //make code clear and cleaner
   Widget build(BuildContext context) {
     //square brackets to create lists
-    var questions = [
-      {
-        'questionText': 'What\'s your favorite color?', 
-        'answers': ['Black', 'Red', 'Green', 'White'],
-      },
-      {
-        'questionText': 'What\s your favorite animal?', 
-        'answers': ['Cat', 'Dog', 'Elephant', 'Lion'],
-      },
-      {
-        'questionText': 'What\s your favorite player?', 
-        'answers': ['Bernardo', 'Salah', 'Ronaldo', 'Messi'],
-      },
-    ];
 
     return MaterialApp(
         home: Scaffold(
-        appBar: AppBar(
+      appBar: AppBar(
         title: Text('Boleias / Transportes'),
       ),
-      body: Column(
-        children: <Widget>[
-          //questions.element(0) -> dart way
-          Question(
-            questions[_questionIndex]['questionText']
-          ),
-          ...(questions[_questionIndex]['answers'] as List<String>).map((answer){
-            return Answer(answerQuestion,answer);
-          }).toList()
-        ],
-      ),
+      body: _questionIndex < _questions.length
+          ? Quiz(
+              answerQuestion: answerQuestion,
+              questionIndex: _questionIndex,
+              questions: _questions,
+            )
+          : Result(_totalScore),
     ));
   }
 }
