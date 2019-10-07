@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import './question.dart';
+import './answer.dart';
 
 //void main(){
 //runApp(MyApp());
@@ -11,7 +12,6 @@ import './question.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
-
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -21,7 +21,6 @@ class _MyAppState extends State<MyApp> {
   var _questionIndex = 0;
 
   void answerQuestion() {
-
     setState(() {
       _questionIndex = _questionIndex + 1;
     });
@@ -29,14 +28,22 @@ class _MyAppState extends State<MyApp> {
     print(_questionIndex);
   }
 
-
-
   @override //make code clear and cleaner
   Widget build(BuildContext context) {
     //square brackets to create lists
     var questions = [
-      'What\'s your favorite color?',
-      'What\s your favorite animal? ',
+      {
+        'questionText': 'What\'s your favorite color?', 
+        'answers': ['Black', 'Red', 'Green', 'White'],
+      },
+      {
+        'questionText': 'What\s your favorite animal?', 
+        'answers': ['Cat', 'Dog', 'Elephant', 'Lion'],
+      },
+      {
+        'questionText': 'What\s your favorite player?', 
+        'answers': ['Bernardo', 'Salah', 'Ronaldo', 'Messi'],
+      },
     ];
 
     return MaterialApp(
@@ -47,19 +54,12 @@ class _MyAppState extends State<MyApp> {
       body: Column(
         children: <Widget>[
           //questions.element(0) -> dart way
-          Question(questions[_questionIndex]),
-          RaisedButton(
-            child: Text('Answer 1'),
-            onPressed:  () => print('Answer 1'),
+          Question(
+            questions[_questionIndex]['questionText']
           ),
-          RaisedButton(
-            child: Text('Answer 2'),
-            onPressed: answerQuestion,
-          ),
-          RaisedButton(
-            child: Text('Answer 3'),
-            onPressed: answerQuestion,
-          ), 
+          ...(questions[_questionIndex]['answers'] as List<String>).map((answer){
+            return Answer(answerQuestion,answer);
+          }).toList()
         ],
       ),
     ));
